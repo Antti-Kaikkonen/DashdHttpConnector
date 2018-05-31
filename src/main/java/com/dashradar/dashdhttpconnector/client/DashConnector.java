@@ -2,6 +2,7 @@ package com.dashradar.dashdhttpconnector.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.Authenticator;
@@ -65,6 +66,13 @@ public class DashConnector {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         HttpURLConnection post = post(request);
         return objectMapper.readValue(post.getInputStream(), typeRef);
+    }
+    
+    protected <T> T post(DashJsonRpcRequest request, JavaType type) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        HttpURLConnection post = post(request);
+        return objectMapper.readValue(post.getInputStream(), type);
     }
 
 }
