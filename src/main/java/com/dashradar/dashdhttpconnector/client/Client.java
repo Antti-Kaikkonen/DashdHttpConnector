@@ -5,9 +5,6 @@ import com.dashradar.dashdhttpconnector.dto.MempoolInfoDTO;
 import com.dashradar.dashdhttpconnector.dto.MempoolTransactionDTO;
 import com.dashradar.dashdhttpconnector.dto.TransactionDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -68,10 +65,21 @@ public class Client {
         });
         return response.getResult();
     }
+    
+    public BlockDTO getBestBlock() throws IOException {
+        return getBlock(getBestBlockHash());
+    }
 
     public String getRawTransaction(String txId) throws IOException {
         String method = "getrawtransaction";
         StandardResponse<String> response = dashConnector.post(new DashJsonRpcRequest(method, txId), new TypeReference<StandardResponse<String>>() {
+        });
+        return response.getResult();
+    }
+    
+    public String getBestBlockHash() throws IOException {
+        String method = "getbestblockhash";
+        StandardResponse<String> response = dashConnector.post(new DashJsonRpcRequest(method), new TypeReference<StandardResponse<String>>() {
         });
         return response.getResult();
     }
